@@ -1,1 +1,1 @@
-# HealthGaurd-AI
+# HealthGuard-AI
