@@ -3,14 +3,19 @@ import streamlit as st
 import numpy as np
 import joblib
 
+@st.cache_resource
+def load_model():
+    model = joblib.load("models/model.pkl")
+    scaler = joblib.load("models/scaler.pkl")
+    return model, scaler
+
 st.set_page_config(page_title="Diabetes Risk Prediction",layout="centered")
 st.title("Diabetes Risk Prediction System")
 st.write("Predict diabetes risk by just answering few simple questions")
 st.divider()
 st.subheader("Enter Patient Details")
 
-model = joblib.load("models/model.pkl")
-scaler = joblib.load("models/scaler.pkl")
+model, scaler = load_model()
 
 preg = st.number_input("Pregnancies",value=1)
 gluc = st.number_input("Glucose", value=120)
@@ -30,11 +35,11 @@ if st.button("Predict Your Risk"):
     st.write(f"Your Probability of getting Diabetic: {percent}%")
 
     if probability >= 0.7:
-        st.write("You may be highly Diabetic immediately consult a doctor.")
+        st.error("High Risk — Consult a doctor immediately.")
     elif probability >= 0.4:
-        st.write("You are on the border line of Diabetic improve your lifestyle.")
+        st.warning("Moderate Risk — Improve lifestyle.")
     else:
-        st.write("Your predicted score is low you are safe")
+        st.success("Low Risk — You are safe.")
 
     st.subheader("Top Contributing Factors (Patient-Specific)")
 
@@ -49,8 +54,8 @@ if st.button("Predict Your Risk"):
         for i in range(len(features)):
             contri.append((features[i],coefs[i]*values[i]))
         
-        contri.sort()
-        top3=contri[-3:]
+        contri.sort(key=lambda x: abs(x[1]), reverse=True)
+        top3=contri[:3]
         
         for i,j in top3:
             if j>0:
