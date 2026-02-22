@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score,roc_auc_score,classification_report
 
 df = pd.read_csv('data/diabetes.csv')
 
@@ -33,5 +33,8 @@ model = LogisticRegression(max_iter=1000)
 model.fit(X_train_scaled,y_train)
 
 y_pred = model.predict(X_test_scaled)
+y_prob = model.predict_proba(X_test_scaled)[:, 1]
 
-print("Accuracy:", accuracy_score(y_test, y_pred))
+print("Accuracy:", (accuracy_score(y_test, y_pred)))
+print("ROC-AUC:", roc_auc_score(y_test, y_pred))
+print("\nClassification Report:\n",classification_report(y_test,y_pred))
