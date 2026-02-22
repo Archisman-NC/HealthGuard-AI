@@ -1,5 +1,7 @@
 import pandas as pd 
 import numpy as np 
+import os
+import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
@@ -32,6 +34,11 @@ X_test_scaled = scaler.transform(X_test)
 model = LogisticRegression(max_iter=1000)
 model.fit(X_train_scaled,y_train)
 
+os.makedirs("models", exist_ok=True)
+joblib.dump(model, "models/model.pkl")
+joblib.dump(scaler, "models/scaler.pkl")
+
 y_pred = model.predict(X_test_scaled)
 
 print("Accuracy:", accuracy_score(y_test, y_pred))
+print("Model and scaler saved to 'models/' directory.")
