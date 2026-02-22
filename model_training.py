@@ -41,11 +41,6 @@ joblib.dump(scaler, "models/scaler.pkl")
 y_pred = model.predict(X_test_scaled)
 y_prob = model.predict_proba(X_test_scaled)[:, 1]
 
-<<<<<<< HEAD
-print("Accuracy:", accuracy_score(y_test, y_pred))
-print("Model and scaler saved to 'models/' directory.")
-=======
 print("Accuracy:", (accuracy_score(y_test, y_pred)))
-print("ROC-AUC:", roc_auc_score(y_test, y_pred))
+print("ROC-AUC:", roc_auc_score(y_test, y_prob))
 print("\nClassification Report:\n",classification_report(y_test,y_pred))
->>>>>>> a19f3322ae2b43b7a9bdb565521498e2fcb4dce1
