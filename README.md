@@ -23,30 +23,6 @@ The system accepts structured clinical diagnostic data including:
 - **Risk Category**: Actionable health categorization into Low, Moderate, or High risk.
 - **Top Contributing Factors**: The system natively extracts and explains the top 3 specific diagnostic features raising or reducing the patient's individual calculated risk in real time.
 
-## System Architecture Diagram (ML Pipeline)
-```mermaid
-flowchart TD
-    subgraph Data Pipeline
-        A[Diabetes CSV Data] --> B[Data Preprocessing]
-        B --> C[Impute Zero Values with Median]
-        C --> D[Standard Scaling Transform]
-        D --> E[Train/Test Split 80/20]
-    end
-
-    subgraph Model Training
-        E --> F((Logistic Regression))
-        F --> G[Extract Coefficients]
-        F --> H[Save model.pkl & scaler.pkl]
-    end
-
-    subgraph Streamlit Interface
-        I[User Inputs Clinical Factors] --> J[Transform User Data via Scaler]
-        J --> K[Inference / Predict Probabilities]
-        H -.-> J
-        H -.-> K
-        K --> L[Render Health Risk & Analysis]
-    end
-```
 
 ## Model Performance Analysis
 The selected ML model is **Logistic Regression**. It was deemed ideal due to its interpretability compared to opaque neural networks and clear decision boundaries on binary classification sets. 
