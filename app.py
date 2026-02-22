@@ -47,7 +47,7 @@ if st.button("Predict Your Risk"):
         contri=[]
 
         for i in range(len(features)):
-            contri.append((feature[i],coefs[i]*values[i]))
+            contri.append((features[i],coefs[i]*values[i]))
         
         contri.sort()
         top3=contri[-3:]
